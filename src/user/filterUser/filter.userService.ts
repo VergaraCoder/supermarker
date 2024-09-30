@@ -13,11 +13,13 @@ export class FilterUserService{
     }
 
     private async filterData(querys:querys,queryBuilder:SelectQueryBuilder<User>){
+        
         const limit=querys.limit ? querys.limit : null;
-        const sort=querys.sort ? querys.sort.toLocaleUpperCase() : null;
+        const sort=querys.sort ? querys.sort : 'name';
+        const order=querys.order== 'asc'? querys.order='ASC' : querys.order='DESC';
         const page=querys.page ? querys.page : null;
 
-        querys.name != undefined ? queryBuilder.andWhere("users.name =: name",{name:querys.name}) : "";
+        querys.name != undefined ? queryBuilder.andWhere("users.name =:name",{name:querys.name}) : "";
         querys.role != undefined ? queryBuilder.innerJoinAndSelect("users.role","roles") : ""; 
 
         if(limit && page ){
@@ -25,7 +27,8 @@ export class FilterUserService{
             queryBuilder.take(limit);
         }
         limit != null ? queryBuilder.take(limit) : null; 
-        sort !== null ? queryBuilder.orderBy(sort) : null
+        sort !== null  && order !== null ? queryBuilder.orderBy(`users.${sort}`,order) : null
+        !sort ? queryBuilder.orderBy(`ASC`) : null;
 
         return await queryBuilder.getMany();
     }
