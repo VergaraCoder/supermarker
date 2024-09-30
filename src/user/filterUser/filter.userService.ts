@@ -8,7 +8,8 @@ import { querys } from "src/common/interface/querys";
 export class FilterUserService{
     async returnResults(querys:querys,repoUser:Repository<User>){
         const queryBuilder=repoUser.createQueryBuilder("users");
-        return await this.filterData(querys,queryBuilder);
+        const data= await this.filterData(querys,queryBuilder);
+        return data;
     }
 
     private async filterData(querys:querys,queryBuilder:SelectQueryBuilder<User>){
@@ -26,6 +27,6 @@ export class FilterUserService{
         limit != null ? queryBuilder.take(limit) : null; 
         sort !== null ? queryBuilder.orderBy(sort) : null
 
-        await queryBuilder.getMany();
+        return await queryBuilder.getMany();
     }
 }
