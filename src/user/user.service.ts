@@ -7,25 +7,37 @@ import { Repository } from 'typeorm';
 import { FilterUserService } from './filterUser/filter.userService';
 import { query } from 'express';
 import { manageError } from 'src/common/erros/customError/maanage.error';
+import { RoleService } from 'src/role/role.service';
+import * as encryptar from 'bcrypt';
+import { filterDataUpdate } from './returnDataUpdate/data.ok';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository:Repository<User>,
-    private filterData:FilterUserService
+    private filterData:FilterUserService,
+    private roleService:RoleService,
+    private filterUpdateData:filterDataUpdate
   ){}
 
   async create(createUserDto: CreateUserDto) {
     try{
-      // const verifyUser=await this.findByEmail(createUserDto);
-      // if(verifyUser){
-      //   throw new manageError({
-      //     type:"CONFLICT",
-      //     message:"THIS USER ALREADY EXIST"
-      //   });
-      // }
-      //const createUser=this.userRepository.create(createUserDto);
-      //await this.userRepository.save(createUser);
+      const verifyRole=await this.roleService.findOne(createUserDto.role);
+      const verifyUser=await this.findByEmail(createUserDto.email);
+      if(verifyUser){
+        throw new manageError({
+          type:"CONFLICT",
+          message:"THIS USER ALREADY EXIST"
+        });
+      }
+      const createUser=this.userRepository.create({
+        name:createUserDto.name,
+        email:createUserDto.email,
+        password :await encryptar.hash(createUserDto.password,10),
+        roleId:verifyRole.id
+      });
+      await this.userRepository.save(createUser);
+      return createUser;
     }catch(err:any){
       throw manageError.signedErrors(err.message);
     }
@@ -75,20 +87,22 @@ export class UserService {
     }
   }
 
-  // async update(id: string, updateUserDto: UpdateUserDto) {
-  //   try{
-  //     //const dataUser=await this.userRepository.update(id,updateUserDto);
-  //     if(!dataUser){
-  //       throw new manageError({
-  //         type:"BAD_REQUEST",
-  //         message:"IT CANNOT UPDATE THIS USER"
-  //       });
-  //     }
-  //     return dataUser;
-  //   }catch(err:any){
-  //     throw manageError.signedErrors(err.message);
-  //   }
-  // }
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try{
+      const object=await this.filterUpdateData.filterData(updateUserDto);
+      
+      const dataUser=await this.userRepository.update(id,object);
+      if(!dataUser){
+        throw new manageError({
+          type:"BAD_REQUEST",
+          message:"IT CANNOT UPDATE THIS USER"
+        });
+      }
+      return dataUser;
+    }catch(err:any){
+      throw manageError.signedErrors(err.message);
+    }
+  }
 
   async remove(id: string) {
     const deleteUser=await this.userRepository.delete(id);
