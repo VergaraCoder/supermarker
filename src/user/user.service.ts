@@ -24,8 +24,8 @@ export class UserService {
       //     message:"THIS USER ALREADY EXIST"
       //   });
       // }
-      const createUser=this.userRepository.create(createUserDto);
-      await this.userRepository.save(createUser);
+      //const createUser=this.userRepository.create(createUserDto);
+      //await this.userRepository.save(createUser);
     }catch(err:any){
       throw manageError.signedErrors(err.message);
     }
@@ -75,20 +75,20 @@ export class UserService {
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    try{
-      const dataUser=await this.userRepository.update(id,updateUserDto);
-      if(!dataUser){
-        throw new manageError({
-          type:"BAD_REQUEST",
-          message:"IT CANNOT UPDATE THIS USER"
-        });
-      }
-      return dataUser;
-    }catch(err:any){
-      throw manageError.signedErrors(err.message);
-    }
-  }
+  // async update(id: string, updateUserDto: UpdateUserDto) {
+  //   try{
+  //     //const dataUser=await this.userRepository.update(id,updateUserDto);
+  //     if(!dataUser){
+  //       throw new manageError({
+  //         type:"BAD_REQUEST",
+  //         message:"IT CANNOT UPDATE THIS USER"
+  //       });
+  //     }
+  //     return dataUser;
+  //   }catch(err:any){
+  //     throw manageError.signedErrors(err.message);
+  //   }
+  // }
 
   async remove(id: string) {
     const deleteUser=await this.userRepository.delete(id);
