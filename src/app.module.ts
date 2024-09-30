@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { CartModule } from './cart/cart.module';
@@ -8,10 +6,24 @@ import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { OrderProductModule } from './order-product/order-product.module';
 import { StockModule } from './stock/stock.module';
+import { CommonModule } from './common/common.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import {tyormCredenctials} from './common/dataBase/dbConfig/db.config';
+
 
 @Module({
-  imports: [UserModule, RoleModule, CartModule, ProductModule, OrderModule, OrderProductModule, StockModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal:true,
+      envFilePath:".env"
+    }),
+    TypeOrmModule.forRootAsync({
+      useClass:tyormCredenctials
+    })
+    ,
+    UserModule, RoleModule, CartModule, ProductModule, OrderModule, OrderProductModule, StockModule, CommonModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
