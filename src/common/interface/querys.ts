@@ -4,4 +4,5 @@ export interface querys{
     limit:number;
     sort:string;
     page:number;
+    order:string;
 }

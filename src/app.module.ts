@@ -22,7 +22,14 @@ import {tyormCredenctials} from './common/dataBase/dbConfig/db.config';
       useClass:tyormCredenctials
     })
     ,
-    UserModule, RoleModule, CartModule, ProductModule, OrderModule, OrderProductModule, StockModule, CommonModule],
+  UserModule,
+  RoleModule, 
+  CartModule, 
+  ProductModule, 
+  OrderModule, 
+  OrderProductModule, 
+  StockModule, 
+  CommonModule],
   controllers: [],
   providers: [],
 })

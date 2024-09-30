@@ -13,19 +13,21 @@ export class UserController {
   }
 
   @Get()
-  findAll(
+  async findAll(
     @Query("name") name :string, 
     @Query("role") role:string, 
     @Query("page") page:number, 
     @Query("limit") limit:number,
     @Query("sort") sort:string, 
+    @Query("order") order:string
   ) {
-    return this.userService.findAll({
+    return await  this.userService.findAll({
       name:name,
       role:role,
       page:page,
       limit:limit,
-      sort:sort
+      sort:sort,
+      order:order
     });
   }
 

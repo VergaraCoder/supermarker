@@ -23,8 +23,9 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     try{
       const verifyRole=await this.roleService.findOne(createUserDto.role);
-      const verifyUser=await this.findByEmail(createUserDto.email);
-      if(verifyUser){
+      const verifyUser=await this.findByEmail(createUserDto.email,"ve");
+      
+      if(verifyUser && verifyUser.length>0){
         throw new manageError({
           type:"CONFLICT",
           message:"THIS USER ALREADY EXIST"
@@ -52,6 +53,7 @@ export class UserService {
           message:"THERE IS NOT DATA WITH THAT CARACTERISTCS"
         });
       }
+      return data;
     }catch(err:any){
       throw manageError.signedErrors(err.message);
     }
@@ -72,10 +74,11 @@ export class UserService {
     }
   }
 
-  async findByEmail(email:string){
+  async findByEmail(email:string, other?:any){
     try{
       const dataUser=await this.userRepository.findBy({email});
-      if(!dataUser){
+  
+      if(!dataUser || dataUser.length==0 && !other ){
         throw new manageError({
           type:"NOT_FOUND",
           message:"THIS EMAIL NOT EXIST "
