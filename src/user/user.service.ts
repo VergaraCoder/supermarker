@@ -25,7 +25,7 @@ export class UserService {
       const verifyRole=await this.roleService.findOne(createUserDto.role);
       const verifyUser=await this.findByEmail(createUserDto.email,"ve");
       
-      if(verifyUser && verifyUser.length>0){
+      if(verifyUser){
         throw new manageError({
           type:"CONFLICT",
           message:"THIS USER ALREADY EXIST"
@@ -76,9 +76,9 @@ export class UserService {
 
   async findByEmail(email:string, other?:any){
     try{
-      const dataUser=await this.userRepository.findBy({email});
+      const dataUser=await this.userRepository.findOne({where:{email:email}});
   
-      if(!dataUser || dataUser.length==0 && !other ){
+      if(!dataUser && !other ){
         throw new manageError({
           type:"NOT_FOUND",
           message:"THIS EMAIL NOT EXIST "

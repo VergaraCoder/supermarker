@@ -20,7 +20,7 @@ export class User {
     @Column()
     roleId:number;
 
-    @ManyToOne(()=>Role,role=>role.user)
+    @ManyToOne(()=>Role,role=>role.user,{eager:true})
     @JoinColumn({name:"roleId"})
     role:Role;
 

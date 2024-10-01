@@ -10,6 +10,7 @@ import { CommonModule } from './common/common.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {tyormCredenctials} from './common/dataBase/dbConfig/db.config';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -20,8 +21,7 @@ import {tyormCredenctials} from './common/dataBase/dbConfig/db.config';
     }),
     TypeOrmModule.forRootAsync({
       useClass:tyormCredenctials
-    })
-    ,
+    }),
   UserModule,
   RoleModule, 
   CartModule, 
@@ -29,7 +29,8 @@ import {tyormCredenctials} from './common/dataBase/dbConfig/db.config';
   OrderModule, 
   OrderProductModule, 
   StockModule, 
-  CommonModule],
+  CommonModule, 
+  AuthModule],
   controllers: [],
   providers: [],
 })

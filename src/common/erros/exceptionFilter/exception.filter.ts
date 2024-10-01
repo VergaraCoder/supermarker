@@ -10,6 +10,8 @@ export class exceptionErrors implements ExceptionFilter{
         let message="";
         let status=0;
 
+        console.log(exception.message);
+        
         const ifExist= exception.message.split(" :: ");
         const ifExist2=exception.response;
 

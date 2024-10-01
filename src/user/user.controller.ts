@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { jwtGuard } from 'src/auth/jwt/guard/jwt.guard';
 
 @Controller('user')
 export class UserController {
@@ -13,6 +14,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(jwtGuard)
   async findAll(
     @Query("name") name :string, 
     @Query("role") role:string, 
@@ -21,6 +23,8 @@ export class UserController {
     @Query("sort") sort:string, 
     @Query("order") order:string
   ) {
+    console.log("pasamos a buscar");
+    
     return await  this.userService.findAll({
       name:name,
       role:role,
