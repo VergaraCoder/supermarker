@@ -13,7 +13,7 @@ export class Product {
     @Column()
     price:number;
 
-    @OneToMany(()=>Stock,stock=>stock.product)
+    @OneToMany(()=>Stock,stock=>stock.product,{eager:true})
     stock:Stock[];
 
     @OneToMany(()=>OrderProduct,orderproduct=>orderproduct.product)

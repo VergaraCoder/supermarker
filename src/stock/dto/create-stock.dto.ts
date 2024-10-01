@@ -14,6 +14,6 @@ export class CreateStockDto {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsInt()
-    productId:number;
+    @IsString()
+    productId:string;
 }
