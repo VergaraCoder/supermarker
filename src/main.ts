@@ -6,6 +6,7 @@ import { seederRole } from './common/dataBase/seeders/role/role.seeder';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
+import { exceptionErrors } from './common/erros/exceptionFilter/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   const seederUsers=new seederUser();
 
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new exceptionErrors());
 
   app.use(cookieParser(configService.get<string>("SIGNED_COOKIE")));
   await seederRoles.run(dataSource);

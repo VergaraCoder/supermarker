@@ -13,7 +13,9 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
+  findAll(
+    //@Query("");
+  ) {
     return this.cartService.findAll();
   }
 

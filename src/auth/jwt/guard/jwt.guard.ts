@@ -16,26 +16,24 @@ export class jwtGuard implements CanActivate{
 
     async canActivate(context: ExecutionContext){
         const request:Request=context.switchToHttp().getRequest()
-        const signedCookies= request.signedCookies;
-        if(!signedCookies){
+        const signedCookies2= request.signedCookies;
+                
+        if(signedCookies2["acces_token"]==undefined){
             throw new manageError({
                 type:"UNAUTHORIZED",
                 message:"THE TOKEN MUST TO BE"
             });
         }
 
-        try{
-            console.log(this.jwtService);
-            
-            const token=signedCookies["acces_token"];
+        try{            
+            const token=signedCookies2["acces_token"];
             await this.jwtService.verify(token,{ignoreExpiration:false});
             const decodeData=await this.jwtService.decode(token);
             request["user"]=decodeData;
             return true;
 
         }catch(err:any){
-            console.log("the error is ", err);
-            
+            console.log("the error is ", err.message);
             if(err.message == 'jwt expired'){
                 console.log("paila entramos ");
                 

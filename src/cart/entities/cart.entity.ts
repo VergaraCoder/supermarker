@@ -9,7 +9,7 @@ export class Cart {
     @Column()
     userId:string;
 
-    @ManyToOne(()=>User,user=>user)
+    @ManyToOne(()=>User,user=>user,{eager:true})
     @JoinColumn({name:"userId"})
     user:User;
 }

@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from "@nestjs/common";
 import { timestamp } from "rxjs";
 
 
@@ -8,23 +8,23 @@ export class exceptionErrors implements ExceptionFilter{
         const request= host.switchToHttp().getRequest();
         const response=host.switchToHttp().getResponse();
         let message="";
-        let status=0;
-
-        console.log(exception.message);
+        let status;
+        
         
         const ifExist= exception.message.split(" :: ");
         const ifExist2=exception.response;
+        
 
-        if(ifExist && ifExist.length==2){
-            message= ifExist[0];
-            status=ifExist[1];
+        if(exception.response.message){
+            message=ifExist2.message;
+            status=ifExist2.statusCode;
         }
-        else if(ifExist2){
-            message= ifExist2.message ? ifExist2.message : "Bad Request"
-            status=ifExist2.error;
+        else if(ifExist){
+            message=ifExist[1];
+            status=HttpStatus[exception.message.split(" :: ")[0]];
         }
         else{
-            message="INTERL SERVER ERROR";
+            message="INTERNAL SERVER ERROR";
             status=500;
         }
 

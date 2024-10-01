@@ -28,7 +28,7 @@ export class FilterUserService{
         }
         limit != null ? queryBuilder.take(limit) : null; 
         sort !== null  && order !== null ? queryBuilder.orderBy(`users.${sort}`,order) : null
-        !sort ? queryBuilder.orderBy(`ASC`) : null;
+        //!sort ? queryBuilder.orderBy(`ASC`) : null;
 
         return await queryBuilder.getMany();
     }
