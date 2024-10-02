@@ -1,4 +1,4 @@
-import { OrderProduct } from "src/order-product/entities/order-product.entity";
+import { ProductCart } from "src/product-cart/entities/product-cart.entity";
 import { Stock } from "src/stock/entities/stock.entity";
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -16,6 +16,6 @@ export class Product {
     @OneToMany(()=>Stock,stock=>stock.product,{eager:true})
     stock:Stock[];
 
-    @OneToMany(()=>OrderProduct,orderproduct=>orderproduct.product)
-    orderProduct:OrderProduct[];
+    @OneToMany(()=>ProductCart,productCart=>productCart.product)
+    productCart:ProductCart[];
 }

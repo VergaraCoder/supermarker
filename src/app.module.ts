@@ -4,7 +4,6 @@ import { RoleModule } from './role/role.module';
 import { CartModule } from './cart/cart.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
-import { OrderProductModule } from './order-product/order-product.module';
 import { StockModule } from './stock/stock.module';
 import { CommonModule } from './common/common.module';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +12,7 @@ import {tyormCredenctials} from './common/dataBase/dbConfig/db.config';
 import { AuthModule } from './auth/auth.module';
 import { APP_FILTER } from '@nestjs/core';
 import { exceptionErrors } from './common/erros/exceptionFilter/exception.filter';
+import { ProductCartModule } from './product-cart/product-cart.module';
 
 
 @Module({
@@ -29,10 +29,9 @@ import { exceptionErrors } from './common/erros/exceptionFilter/exception.filter
   CartModule, 
   ProductModule, 
   OrderModule, 
-  OrderProductModule, 
   StockModule, 
   CommonModule, 
-  AuthModule],
+  AuthModule, ProductCartModule],
   controllers: [],
   providers: [
     {

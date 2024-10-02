@@ -1,4 +1,3 @@
-import { OrderProduct } from "src/order-product/entities/order-product.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -12,7 +11,4 @@ export class Order {
 
     @Column()
     totalPrice:number
-
-    @OneToMany(()=>OrderProduct,orderproduct=>orderproduct.order,{eager:true})
-    orderProduct:OrderProduct[];
 }
