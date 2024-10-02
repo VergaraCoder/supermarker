@@ -22,9 +22,7 @@ export class UserController {
     @Query("limit") limit:number,
     @Query("sort") sort:string, 
     @Query("order") order:string
-  ) {
-    console.log("pasamos a buscar");
-    
+  ) {  
     return await  this.userService.findAll({
       name:name,
       role:role,

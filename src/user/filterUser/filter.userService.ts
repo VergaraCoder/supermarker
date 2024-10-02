@@ -19,13 +19,17 @@ export class FilterUserService{
         const order=querys.order== 'asc'? querys.order='ASC' : querys.order='DESC';
         const page=querys.page ? querys.page : null;
 
+
         querys.name != undefined ? queryBuilder.andWhere("users.name =:name",{name:querys.name}) : "";
+
+
         querys.role != undefined ? queryBuilder.innerJoinAndSelect("users.role","roles") : ""; 
 
         if(limit && page ){
             queryBuilder.skip((page-1)*limit);
             queryBuilder.take(limit);
         }
+      
         limit != null ? queryBuilder.take(limit) : null; 
         sort !== null  && order !== null ? queryBuilder.orderBy(`users.${sort}`,order) : null
         //!sort ? queryBuilder.orderBy(`ASC`) : null;
