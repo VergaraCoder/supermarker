@@ -3,7 +3,7 @@ import { Product } from "src/product/entities/product.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
-@Entity()
+@Entity("orderProducts")
 export class OrderProduct {
     @PrimaryGeneratedColumn()
     id:number;

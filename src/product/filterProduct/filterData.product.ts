@@ -33,7 +33,10 @@ export class FilterProductService{
         for(let x of Object.keys(querys)){  
             if(querys[x] !== undefined && /^stock_(gt|gte|lt|lte)$/.test(x)){                                                   
                 elements=this.operators(x);                     
-                builder.innerJoin(`products.${elements[1]}`,elements[1])                              
+                builder.innerJoin(`products.${elements[1]}`,elements[1])    
+                builder.innerJoinAndMapMany
+                builder.innerJoinAndMapOne
+                builder.innerJoinAndSelect                          
                 builder.andWhere(`stock.quantity ${elements[0]} ${parseInt(querys[x])}`);
             }
             else if(querys[x] !== undefined && /^price_(gt|gte|lt|lte)$/.test(x)){

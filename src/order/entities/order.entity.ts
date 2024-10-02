@@ -10,6 +10,9 @@ export class Order {
     @Column()
     cartId:number;
 
-    @OneToMany(()=>OrderProduct,orderproduct=>orderproduct.order)
+    @Column()
+    totalPrice:number
+
+    @OneToMany(()=>OrderProduct,orderproduct=>orderproduct.order,{eager:true})
     orderProduct:OrderProduct[];
 }
