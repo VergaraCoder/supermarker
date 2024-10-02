@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
 import { Cart } from "src/cart/entities/cart.entity";
-import { OrderProduct } from "src/order-product/entities/order-product.entity";
 import { Order } from "src/order/entities/order.entity";
+import { ProductCart } from "src/product-cart/entities/product-cart.entity";
 import { Product } from "src/product/entities/product.entity";
 import { Role } from "src/role/entities/role.entity";
 import { Stock } from "src/stock/entities/stock.entity";
@@ -23,7 +23,7 @@ export class tyormCredenctials implements TypeOrmOptionsFactory{
             username:this.configService.get<string>("DB_USERNAME"),
             password:this.configService.get<string>("DB_PASSWORD"),
             database:this.configService.get<string>("DB_DATABASE"),
-            entities:[User,Role,OrderProduct,Product,Order,Cart,Stock],
+            entities:[User,Role,ProductCart,Product,Order,Cart,Stock],
             synchronize:true
 
         }

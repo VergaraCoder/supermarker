@@ -15,6 +15,9 @@ export class Stock {
     @Column()
     quantity:number;
 
+    @Column()
+    unitLessForHowManyDishes:number
+
     @ManyToOne(()=>Product,product=>product.stock)
     product:Product[];
 }

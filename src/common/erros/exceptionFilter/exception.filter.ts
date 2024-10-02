@@ -10,13 +10,15 @@ export class exceptionErrors implements ExceptionFilter{
         let message="";
         let status;
         
+        console.log(exception);
+        
         
         const ifExist= exception.message.split(" :: ");
         const ifExist2=exception.response;
         
 
-        if(exception.response.message){
-            message=ifExist2.message;
+        if(ifExist2){
+            message=ifExist2.message  ;
             status=ifExist2.statusCode;
         }
         else if(ifExist){
