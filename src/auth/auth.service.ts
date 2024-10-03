@@ -6,6 +6,7 @@ import { UserService } from 'src/user/user.service';
 import { dataUser } from 'src/common/interface/interface.jwt';
 import * as crypt from 'bcrypt';
 import { manageError } from 'src/common/erros/customError/maanage.error';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -14,8 +15,8 @@ export class AuthService {
     private userService:UserService
   ){}
 
-  create(createAuthDto: CreateAuthDto) {
-    const acces_token=this.jwtService.sign(createAuthDto,{expiresIn:'30m'});
+  create(createAuthDto: any) {
+    const acces_token=this.jwtService.sign(createAuthDto,{expiresIn:'30s'});
     const refresh_token=this.jwtService.sign(createAuthDto,{expiresIn:'10d'});
     
     return {
@@ -24,8 +25,32 @@ export class AuthService {
     }
   }
 
-  findAll(hola:any) {
-    return `This action returns all auth`;
+  async createRenovateToken(tokenRefresh:string){
+    try{
+      await this.jwtService.verify(tokenRefresh);
+      const tokenDecode= await this.jwtService.decode(tokenRefresh);
+      delete tokenDecode.iat;
+      delete tokenDecode.exp;
+      const acces_Token= this.jwtService.sign(tokenDecode,{expiresIn:'30s'});
+      return {
+        tokenDecode,
+        acces_Token
+      }
+    }catch(err:any){
+      if(err instanceof jwt.JsonWebTokenError ){
+        throw new manageError({
+          type:"NOT_ACCEPTABLE",
+          message:"THE TOKEN IS NOT VALID"
+        });
+      }
+      else if(err instanceof jwt.TokenExpiredError || err instanceof jwt.NotBeforeError){
+        throw new manageError({
+          type:"UNAUTHORIZED",
+          message:"THE TOKEN EXPIRED"
+        });
+      }
+      throw manageError.signedErrors(err.message);
+    }
   }
 
   async verifyUser(dataUser:dataUser){

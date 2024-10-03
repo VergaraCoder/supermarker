@@ -9,14 +9,15 @@ export class exceptionErrors implements ExceptionFilter{
         const response=host.switchToHttp().getResponse();
         let message="";
         let status;
-            
-        const ifExist= exception.message.split(" :: ");
+        console.log(exception);
         
+            
+        const ifExist= exception.message.split(" :: ");      
         const ifExist2=exception.response;
         
 
-        if(exception.response.message){
-            message=ifExist2.message;
+        if(ifExist2 && ifExist2.message){
+            message=ifExist2.error ? ifExist2.error : ifExist2.message;
             status=ifExist2.statusCode ? ifExist2.statusCode : 400;          
         }
         else if(ifExist.length==2){            

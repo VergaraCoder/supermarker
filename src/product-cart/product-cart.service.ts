@@ -1,24 +1,30 @@
+import { createProductCartDto } from './dto/createProductCart.ts/creation.productCart';
 import { Injectable } from '@nestjs/common';
-import { CreateProductCartDto } from './dto/create-product-cart.dto';
 import { UpdateProductCartDto } from './dto/update-product-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductCart } from './entities/product-cart.entity';
 import { Repository } from 'typeorm';
 import { FilterProductCartService } from './filterProductCart.data.ts/filterproductCart';
+import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class ProductCartService {
   constructor(
     @InjectRepository(ProductCart)
     private productCartRepository:Repository<ProductCart>,
-    private filterData:FilterProductCartService
+    private filterData:FilterProductCartService,
+    private productService:ProductService
   ){}
 
-  async create(createProductCartDto: CreateProductCartDto) {
+  async create(createProductCartDto: createProductCartDto) {
     try{
-        const productCart=this.productCartRepository.create(createProductCartDto);
-        await this.productCartRepository.save(productCart);
-        return productCart;
+      console.log(createProductCartDto);
+      
+      for(const productCart of createProductCartDto.productCart){
+        const product=await this.productService.findOne(productCart.productId,productCart.quantity);
+
+      }
+        //return productCart;
     }catch(err:any){
       throw err;
     }

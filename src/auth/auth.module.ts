@@ -30,6 +30,6 @@ import { localStrategy } from './jwt/strategy/local.strategy';
     localGuard,
     jwtGuard,
   ],
-  exports:[JwtModule]
+  exports:[JwtModule,AuthService]
 })
 export class AuthModule {}

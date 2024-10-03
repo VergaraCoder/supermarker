@@ -30,10 +30,4 @@ export class AuthController {
 
     response.status(200).json("Tokens creates");
   }
-
-  @Get()
-  @UseGuards(jwtGuard)
-  verifyToken(@Req() request:Request) {
-    return this.authService.findAll(request["token"]);
-  }
 }

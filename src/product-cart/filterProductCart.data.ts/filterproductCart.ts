@@ -22,8 +22,6 @@ export class FilterProductCartService{
         .where("cart.id=:cartId",{cartId:cartId})
         .andWhere("ProductCart.cartId=:productOfUser",{productOfUser:cartId})
         .getMany();
-
-    
     }
 
     private async deleteProducts(builder:SelectQueryBuilder<ProductCart>,idProducts:number[]){

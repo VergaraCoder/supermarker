@@ -10,8 +10,8 @@ export class localStrategy extends PassportStrategy(Strategy){
         private AuthService:AuthService
     ){
         super({
-            usernameField:"email",
-            passwordField:"password"
+            usernameField: 'email', 
+            passwordField: 'password',
         })
     }
 
@@ -24,14 +24,13 @@ export class localStrategy extends PassportStrategy(Strategy){
                 idUser:User.id,
                 email:User.email,
                 role:User.role.nameRole,
-                name:User.name
-            };
-            console.log("Pasamos ya ");
-            
-            
+                name:User.name,
+                cartId:User.cart[0].id !==undefined  ?  User.cart[0].id : null
+            };           
             return user;
         }catch(err:any){
-            
+            console.log("This error is in local guard ",err);
+            throw err;
         }
     }
 }

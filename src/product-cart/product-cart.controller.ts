@@ -1,15 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { createProductCartDto } from './dto/createProductCart.ts/creation.productCart';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { ProductCartService } from './product-cart.service';
-import { CreateProductCartDto } from './dto/create-product-cart.dto';
 import { UpdateProductCartDto } from './dto/update-product-cart.dto';
+import { jwtGuard } from 'src/auth/jwt/guard/jwt.guard';
+import { Request } from 'express';
 
 @Controller('product-cart')
 export class ProductCartController {
   constructor(private readonly productCartService: ProductCartService) {}
 
   @Post()
-  create(@Body() createProductCartDto: CreateProductCartDto) {
-    return this.productCartService.create(createProductCartDto);
+  @UseGuards(jwtGuard)
+  create(@Body() createProductCartDto: createProductCartDto,@Req() request:Request) {
+    const user=request["user"];
+    return this.productCartService.create({
+      ...createProductCartDto,
+      ...user
+    });
   }
 
   @Get()

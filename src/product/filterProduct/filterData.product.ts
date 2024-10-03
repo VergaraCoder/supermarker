@@ -19,24 +19,23 @@ export class FilterProductService{
     async returnResults(querys:any,repoProduct:Repository<Product>){
         const queryBuilder=repoProduct.createQueryBuilder("products");
         return await this.filterData(querys,queryBuilder);
-        
     }
 
 
-    private async filterData(querys:querysProduct,builder:SelectQueryBuilder<Product>){   
+    private async filterData(querys:querysProduct,builder:SelectQueryBuilder<Product>){        
+        if(Object.values(querys).every(properti=>properti==undefined)){
+            return await builder.leftJoinAndSelect("products.stock","stock").getMany()
+        } 
         let elements=[];     
         const limit = querys.limit ? querys.limit : null;
         const skip = querys.page ? querys.page : null;
         const order= querys.order ? querys.order : null;
-        const sortElection= sort[querys.sort]; // take some value of the enum 
+        const sortElection= sort[querys.sort]; 
 
         for(let x of Object.keys(querys)){  
             if(querys[x] !== undefined && /^stock_(gt|gte|lt|lte)$/.test(x)){                                                   
                 elements=this.operators(x);                     
-                builder.innerJoin(`products.${elements[1]}`,elements[1])    
-                builder.innerJoinAndMapMany
-                builder.innerJoinAndMapOne
-                builder.innerJoinAndSelect                          
+                builder.innerJoin(`products.${elements[1]}`,elements[1])                             
                 builder.andWhere(`stock.quantity ${elements[0]} ${parseInt(querys[x])}`);
             }
             else if(querys[x] !== undefined && /^price_(gt|gte|lt|lte)$/.test(x)){
@@ -55,7 +54,7 @@ export class FilterProductService{
 
         if(sortElection && order) builder.orderBy(`products.${order}`,sortElection);
  
-        return await builder.getMany(); // take all register filters
+        return await builder.getMany(); 
     }
 
     private operators(query:any){

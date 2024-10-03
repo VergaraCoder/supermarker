@@ -19,5 +19,5 @@ export class Stock {
     unitLessForHowManyDishes:number
 
     @ManyToOne(()=>Product,product=>product.stock)
-    product:Product[];
+    product:Product;
 }

@@ -19,7 +19,6 @@ export class RoleGuard implements CanActivate{
                 message:"USER IS NOT AUTHORIZED"
             });
         }
-
         return true;
     }
 }

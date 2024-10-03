@@ -12,7 +12,7 @@ import { FilterProductService } from './filterProduct/filterData.product';
   controllers: [ProductController],
   providers: [ProductService,
   FilterProductService],
-  exports:[TypeOrmModule]
+  exports:[TypeOrmModule,ProductService]
 
 })
 export class ProductModule {}

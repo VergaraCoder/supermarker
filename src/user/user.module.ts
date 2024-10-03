@@ -18,7 +18,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
     forwardRef(()=>AuthModule)
   ],
   controllers: [UserController],
-  providers: [UserService,
+  providers: [
+    UserService,
   FilterUserService,
   RoleService,
   filterDataUpdate,

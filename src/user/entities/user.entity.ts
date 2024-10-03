@@ -24,6 +24,6 @@ export class User {
     @JoinColumn({name:"roleId"})
     role:Role;
 
-    @OneToMany(()=>Cart,cart=>cart.user)
+    @OneToMany(()=>Cart,cart=>cart.user,{eager:true})
     cart:Cart[];
 }
