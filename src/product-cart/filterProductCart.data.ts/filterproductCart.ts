@@ -6,10 +6,16 @@ import { manageError } from "src/common/erros/customError/maanage.error";
 
 @Injectable()
 export class FilterProductCartService{
-    async returnResults(repoProductCart:Repository<ProductCart>,operationCrud:string,data:number,idResources?:number[]| string[],){
+    async returnResults(repoProductCart:Repository<ProductCart>,operationCrud:string,data:any,idResources?:number[]| string[],){
+
+
         const queryBuilder=repoProductCart.createQueryBuilder("ProductsCart");
-        if(idResources.every(param=>typeof param=="number") && "delete"){
+
+        if(idResources && idResources.every(param=>typeof param=="number") && operationCrud=="delete"){
             return await this.deleteProducts(queryBuilder,idResources);
+        }
+        else if(operationCrud=="one"){
+            return await this.filterOneData(queryBuilder,data);
         }
         else{
             return await this.filterData(queryBuilder,data)
@@ -17,10 +23,12 @@ export class FilterProductCartService{
     }
 
     private async filterData(builder:SelectQueryBuilder<ProductCart>,cartId:number){
-        return await builder.innerJoin("ProductsCart.productId","products")
-        .innerJoin("ProductCart.cartId","cart")
+        console.log(cartId);
+        
+        return await builder.innerJoin("ProductsCart.product","products")
+        .innerJoin("ProductsCart.cart","cart")
         .where("cart.id=:cartId",{cartId:cartId})
-        .andWhere("ProductCart.cartId=:productOfUser",{productOfUser:cartId})
+        //.andWhere("ProductsCart.cartId=:productOfUser",{productOfUser:cartId})
         .getMany();
     }
 
@@ -40,4 +48,15 @@ export class FilterProductCartService{
             throw manageError.signedErrors(err.message);
         }
     }
+
+
+    
+    private async filterOneData(builder:SelectQueryBuilder<ProductCart>,dataQuery:any){        
+        return await builder.innerJoin("ProductsCart.product","products")
+        .innerJoin("ProductsCart.cart","cart")
+        .where("cart.id=:cartId",{cartId:dataQuery.cartId})
+        .andWhere("products.id=:product",{product:dataQuery.productId})
+        .getMany();
+    }
+
 }
