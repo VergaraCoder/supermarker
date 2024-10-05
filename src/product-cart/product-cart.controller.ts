@@ -7,6 +7,7 @@ import { Request } from 'express';
 import { roles } from 'src/common/decorators/role.decorator';
 import { ProductCartDto } from './dto/create-product-cart.dto';
 import { RoleGuard } from 'src/common/decorators/guard/role.guard';
+import { Auth } from 'src/common/decorators/custom/auth.decorator';
 
 @Controller('product-cart')
 export class ProductCartController {
@@ -23,15 +24,14 @@ export class ProductCartController {
   }
 
   @Get()
-  @roles("admin","client")
-  @UseGuards(jwtGuard)
+  @Auth("client","admin")
   findAll(@Req() request:any) {
     const dataUser=request["user"];    
     return this.productCartService.findAll(dataUser.cartId);
   }
 
   @Get(':productId')
-  @roles("admin","client")
+  @Auth("admin","client")
   @UseGuards(jwtGuard,RoleGuard)
   findOne(@Param('productId') prodcutId: string,@Req() request:any) {
     const cartId=request["user"].cartId;

@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { jwtGuard } from 'src/auth/jwt/guard/jwt.guard';
+import { Auth } from 'src/common/decorators/custom/auth.decorator';
 
 @Controller('user')
 export class UserController {
@@ -14,7 +15,7 @@ export class UserController {
   }
 
   @Get()
-  @UseGuards(jwtGuard)
+  @Auth("admin")
   async findAll(
     @Query("name") name :string, 
     @Query("role") role:string, 

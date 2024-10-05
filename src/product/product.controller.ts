@@ -5,21 +5,20 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { jwtGuard } from 'src/auth/jwt/guard/jwt.guard';
 import { roles } from 'src/common/decorators/role.decorator';
 import { RoleGuard } from 'src/common/decorators/guard/role.guard';
+import { Auth } from 'src/common/decorators/custom/auth.decorator';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  @roles("admin","client")
-  @UseGuards(jwtGuard,RoleGuard)
+  @Auth("admin")
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productService.create(createProductDto);
   }
 
   @Get()
-  @roles("admin")
-  @UseGuards(jwtGuard,RoleGuard)
+  @Auth("admin")
   findAll(
     @Query("name") name: string,
     @Query("price") price:number,
@@ -58,22 +57,19 @@ export class ProductController {
   }
 
   @Get(':id')
-  @roles("admin","client")
-  @UseGuards(jwtGuard,RoleGuard)
+  @Auth("admin","client")
   findOne(@Param('id') id: string) {
    // return this.productService.findOne(id);
   }
 
   @Patch(':id')
-  @roles("admin")
-  @UseGuards(jwtGuard,RoleGuard)
+  @Auth("admin")
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productService.update(+id, updateProductDto);
   }
 
   @Delete(':id')
-  @roles("admin")
-  @UseGuards(jwtGuard,RoleGuard)
+  @Auth("admin")
   remove(@Param('id') id: string) {
     return this.productService.remove(+id);
   }
