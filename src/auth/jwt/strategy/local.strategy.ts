@@ -12,21 +12,24 @@ export class localStrategy extends PassportStrategy(Strategy){
         super({
             usernameField: 'email', 
             passwordField: 'password',
-        })
+        });
     }
 
     async validate(email:string,password:string){
         try{
-            const User= await this.AuthService.verifyUser({email:email,password:password});
-            console.log(User);
+            console.log("enter");
             
+            const User= await this.AuthService.verifyUser({email:email,password:password});
+            const CartId=await this.AuthService.verifyCart(User.id);
             const user={
                 idUser:User.id,
                 email:User.email,
                 role:User.role.nameRole,
                 name:User.name,
-                cartId:User.cart[0].id !==undefined  ?  User.cart[0].id : null
+                cartId:CartId
             };           
+            console.log(user);
+            
             return user;
         }catch(err:any){
             console.log("This error is in local guard ",err);

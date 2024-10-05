@@ -7,12 +7,14 @@ import { dataUser } from 'src/common/interface/interface.jwt';
 import * as crypt from 'bcrypt';
 import { manageError } from 'src/common/erros/customError/maanage.error';
 import * as jwt from 'jsonwebtoken';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService:JwtService,
-    private userService:UserService
+    private userService:UserService,
+    private cartService:CartService
   ){}
 
   create(createAuthDto: any) {
@@ -65,6 +67,14 @@ export class AuthService {
       return User;
     }catch(err:any){  
       throw manageError.signedErrors(err.message);
+    }
+  }
+
+  async verifyCart(idUser:any){
+    try{
+      return await this.cartService.verifyCartByUserId(idUser);
+    }catch(err:any){
+      throw err;
     }
   }
 }

@@ -86,6 +86,18 @@ export class CartService {
     }
   }
 
+  async verifyCartByUserId(userId:CreateCartDto){
+    try{
+      let dataCart= await this.cartRepository.findOneBy({userId:userId.userId});
+      if(!dataCart){
+        dataCart=await this.create(userId); 
+      }
+      return dataCart.id;
+    }catch(err:any){
+      throw err;
+    }
+  }
+
   async remove(id: number) {
     try{
       const deleteCart= await this.cartRepository.delete(id);

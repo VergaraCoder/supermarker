@@ -13,6 +13,8 @@ export class RoleGuard implements CanActivate{
         const request= context.switchToHttp().getRequest();
         const roles=this.reflector.get(KEY_VALUES,context.getHandler());
 
+        console.log(roles);
+        
         if(!roles.includes(request.user.role)){
             throw new manageError({
                 type:"UNAUTHORIZED",

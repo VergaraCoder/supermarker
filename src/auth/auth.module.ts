@@ -10,6 +10,7 @@ import { jwtGuard } from './jwt/guard/jwt.guard';
 import { RoleModule } from 'src/role/role.module';
 //import { jwtStrategy } from './jwt/strategy/jwt.strategy';
 import { localStrategy } from './jwt/strategy/local.strategy';
+import { CartModule } from 'src/cart/cart.module';
 
 @Module({
   imports:[
@@ -22,6 +23,7 @@ import { localStrategy } from './jwt/strategy/local.strategy';
         secret: configService.get<string>('JWT_SECRET'),
       }),
     }),
+    forwardRef(()=>CartModule)
   ],
   controllers: [AuthController],
   providers: [

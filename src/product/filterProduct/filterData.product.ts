@@ -5,12 +5,12 @@ import { querysProduct } from "src/common/interface/querysProduct";
 import { operatorsSql } from "src/common/interface/operator";
 
 
-enum sort{
-    asc="ASC",
-    desc="DESC",
-    ASC="ASC",
-    DESC="DESC",
-}
+// enum sort{
+//     asc="ASC",
+//     desc="DESC",
+//     ASC="ASC",
+//     DESC="DESC",
+// }
 
 @Injectable()
 export class FilterProductService{
@@ -28,9 +28,9 @@ export class FilterProductService{
         } 
         let elements=[];     
         const limit = querys.limit ? querys.limit : null;
-        const skip = querys.page ? querys.page : null;
+        const skip = querys.page ? querys.page : 1;
         const order= querys.order ? querys.order : null;
-        const sortElection= sort[querys.sort]; 
+        const sort= querys.sort=="asc" ? "ASC" : "DESC";
 
         for(let x of Object.keys(querys)){  
             if(querys[x] !== undefined && /^stock_(gt|gte|lt|lte)$/.test(x)){                                                   
@@ -44,16 +44,19 @@ export class FilterProductService{
             }
         }
 
-        querys.name != undefined ? builder.andWhere("products.name =:name",{name:querys.name}) : "";
+
+        if(querys.name){
+            builder.andWhere("products.name =:name",{name:querys.name})
+        }
       
-        if(limit && skip){
+        if(limit){
             builder.skip((skip-1) * limit );
             builder.take(limit);
         } 
-        if(limit) builder.take(limit);
 
-        if(sortElection && order) builder.orderBy(`products.${order}`,sortElection);
- 
+        if(order){    
+             builder.orderBy(`products.${order}`,sort);
+        }
         return await builder.getMany(); 
     }
 
